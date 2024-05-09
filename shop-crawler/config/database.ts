@@ -2,9 +2,11 @@ import env from '#start/env'
 import { defineConfig } from '@adonisjs/lucid'
 
 const dbConfig = defineConfig({
+  // prettyPrintDebugQueries: true,
   connection: 'mssql',
   connections: {
     mssql: {
+      // debug: true,
       client: 'mssql',
       connection: {
         server: env.get('DB_HOST'),
