@@ -1,0 +1,46 @@
+1. Долго боролся с ORM для написания подзапроса - очень сложно даже зная SQL пытаться что-то сделать с её помощью.
+  в ступор вводит даже простейшее создание псевдонима для таблицы, для создания подзапросов. Полностью нативным SQL решил
+  бы задачу за 15 минут, а тут ушло несколько часов в попытках разобраться.
+
+2. Попробовал сделать иньекцию сервиса, как я понимаю, именно для этого служит inject(), надеюсь, в курсе будем 
+  подробнее разбирать парадигму инъекций зависимостей в Адонисе. Например, db я всё еще получаю импортом из модуля.
+
+3 Не вопрос, просто результат работы. В MS SQL есть готовый класс для работы с географией, у которого есть функция distance, 
+  которая, в случае использования ISO константы 4326 выдает расстояние в метрах. Проблема разумеется в том, что
+  для полного поиска по дистанции нам всегда надо будет перебрать все магазины, если не придумывать какой-то
+  оптимизации или шардирования, или не отсекать изначально большие массивы по каким-то квадратам.
+
+
+SELECT 
+  isnull(custom_name, actual_name) AS shopName, 
+  position.STDistance(
+    GEOGRAPHY :: STGeomFromText('POINT(2 48)', 4326)
+  ) AS distance, 
+  [products].[name] AS [productName], 
+  [shop_products].[price] AS [productPrice], 
+  [shop_products].[price_date] AS [productPriceDate], 
+  shops.position_as_text 
+FROM 
+  [shops] 
+  INNER JOIN [shop_classes] ON [shop_classes].[id] = [shop_class_id] 
+  INNER JOIN [shop_products] ON [shops].[id] = [shop_id] 
+  INNER JOIN [products] ON [products].[id] = [product_id] 
+WHERE 
+  [product_id] = ? 
+  AND position.STDistance(
+    GEOGRAPHY :: STGeomFromText('POINT(2 48)', 4326)
+  ) <= 100000000 
+  AND shop_products.price_date = (
+    SELECT 
+      MAX(price_date) 
+    FROM 
+      shop_products t 
+    WHERE 
+      t.shop_id = shop_products.shop_id 
+      AND t.product_id = shop_products.product_id 
+      AND t.price_date <= '2024-07-01T00:00:00.000+00:00'
+  ) 
+ORDER BY 
+  distance DESC
+
+  */
