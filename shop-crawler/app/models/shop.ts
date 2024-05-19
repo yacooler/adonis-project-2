@@ -1,5 +1,5 @@
 import { DateTime } from 'luxon'
-import { BaseModel, belongsTo, column, manyToMany } from '@adonisjs/lucid/orm'
+import { BaseModel, belongsTo, column, computed, manyToMany } from '@adonisjs/lucid/orm'
 import ShopClass from './shop_class.js'
 import type { BelongsTo, ManyToMany } from '@adonisjs/lucid/types/relations'
 import Product from './product.js'
@@ -24,7 +24,7 @@ export default class Shop extends BaseModel {
   @column()
   declare position: any
 
-  @column()
+  @computed()
   declare positionAsText: string
 
   @manyToMany(()=>Product, {

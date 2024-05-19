@@ -1,0 +1,18 @@
+make service 
+send to mail@mail.ru: new shop {
+  "shopClassId": 1,
+  "customName": "Магазин с СМС рассылкой",
+  "position": "POINT(55.75222 37.61556)",
+  "createdAt": "2024-05-19T18:55:31.531+00:00",
+  "updatedAt": "2024-05-19T18:55:31.532+00:00",
+  "id": 16
+} was opened
+make service 
+send to mail@mail.ru: new shop {
+  "shopClassId": 1,
+  "customName": "Магазин с СМС рассылкой",
+  "position": "POINT(55.75222 37.61556)",
+  "createdAt": "2024-05-19T19:13:12.962+00:00",
+  "updatedAt": "2024-05-19T19:13:12.962+00:00",
+  "id": 17
+} was opened
